@@ -1,3 +1,4 @@
+import 'package:class_activity_13/Profilescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,12 +34,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void _signOut() async {
-    await _auth.signOut();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Signed out successfully'),
-    ));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          ElevatedButton(
-            onPressed: () {
-              _signOut();
-            },
-            child: Text('Sign Out'),
-          ),
         ],
       ),
       body: Center(
@@ -191,6 +180,24 @@ class _EmailPasswordFormState extends State<EmailPasswordForm> {
         _initialState = false;
       });
     }
+    checkLogin();
+
+  }
+
+  void checkLogin() {
+    if (!_initialState) {
+      if (!_success){
+        AlertDialog: [
+          Text('Not successful. Try Again')
+        ];
+      }
+      else {
+        Navigator.pushReplacement(
+          context,
+           MaterialPageRoute(builder: (context) => Profilescreen()),
+          );
+      }
+    }
   }
 
   @override
@@ -235,18 +242,6 @@ class _EmailPasswordFormState extends State<EmailPasswordForm> {
                 }
               },
               child: Text('Submit'),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              _initialState
-                  ? 'Please sign in'
-                  : _success
-                      ? 'Successfully signed in $_userEmail'
-                      : 'Sign in failed',
-              style: TextStyle(color: _success ? Colors.green : Colors.red),
             ),
           ),
         ],
